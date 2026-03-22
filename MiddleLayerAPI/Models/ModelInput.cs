@@ -5,14 +5,14 @@
         /// <summary>
         /// News Statement
         /// </summary>
-        public string? Statement { get; set; }   
+        public string? statement { get; set; }   
         /// <summary>
         /// News Subject
         /// </summary>
-        public string? Subject { get; set; }
+        public string? subject { get; set; }
         /// <summary>
         /// News Context
         /// </summary>
-        public string? Context { get; set; }
+        public string? context { get; set; }
     }
 }

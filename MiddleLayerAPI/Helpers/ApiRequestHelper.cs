@@ -1,6 +1,8 @@
 ﻿using MiddleLayerAPI.Models;
-using System.Text.Json.Nodes;
+using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Net.Http.Formatting;
 
 namespace MiddleLayerAPI.Helpers
 {
@@ -20,9 +22,11 @@ namespace MiddleLayerAPI.Helpers
             if (client is null)
             {
                 client = new HttpClient();
+                client.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue("application/json"));
             }
             string jsonString = JsonSerializer.Serialize(input);
-            HttpResponseMessage retval = await client.PostAsJsonAsync("https://localhost:8080/predict",  jsonString);
+            HttpResponseMessage retval = await client.PostAsJsonAsync("http://localhost:8080/predict",  input);
             var jsonResult = retval.Content.ReadAsStringAsync().Result;
             ModelResponse? response = JsonSerializer.Deserialize<ModelResponse>(jsonString);
 

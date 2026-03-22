@@ -288,3 +288,10 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+Python/Fake-News-Detector/context_encoder.pkl
+Python/Fake-News-Detector/job_title_encoder.pkl
+Python/Fake-News-Detector/party_affiliation_encoder.pkl
+Python/Fake-News-Detector/speaker_encoder.pkl
+Python/Fake-News-Detector/state_info_encoder.pkl
+Python/Fake-News-Detector/subject_encoder.pkl
+Python/Fake-News-Detector/tfidf_vectorizer.joblib

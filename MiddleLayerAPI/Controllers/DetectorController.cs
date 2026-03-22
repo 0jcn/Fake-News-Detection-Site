@@ -19,12 +19,6 @@ namespace MiddleLayerAPI.Controllers
         [HttpPost(Name = "Predict")]
         public ModelResponse GetPrediction([FromBody] ModelInput input)
         {
-            //var temp = new ModelInput // temp input for testing
-            //{
-            //    Statement = "The sky is blue.",
-            //    Subject = "The sky",
-            //    Context = "The sky appears blue during the day due to the scattering of sunlight by the atmosphere."
-            //};
             
             ModelResponse? retval = PostToModel(input).Result;
 
