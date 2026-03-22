@@ -1,0 +1,6 @@
+@MiddleLayerAPI_HostAddress = http://localhost:5226
+
+GET {{MiddleLayerAPI_HostAddress}}/Detector/
+Accept: application/json
+
+###
