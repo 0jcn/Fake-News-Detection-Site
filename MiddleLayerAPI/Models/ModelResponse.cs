@@ -6,5 +6,7 @@ namespace MiddleLayerAPI.Models
         /// Class based prediction from the model
         /// </summary>
         public string? prediction { get; set; }  
+
+        public List<double>? probabilities { get; set; }
     }
 }

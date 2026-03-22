@@ -28,7 +28,7 @@ namespace MiddleLayerAPI.Helpers
             string jsonString = JsonSerializer.Serialize(input);
             HttpResponseMessage retval = await client.PostAsJsonAsync("http://localhost:8080/predict",  input);
             var jsonResult = retval.Content.ReadAsStringAsync().Result;
-            ModelResponse? response = JsonSerializer.Deserialize<ModelResponse>(jsonString);
+            ModelResponse? response = JsonSerializer.Deserialize<ModelResponse>(jsonResult);
 
             return response;
         }
