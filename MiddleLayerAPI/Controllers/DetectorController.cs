@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using MiddleLayerAPI.Models;
 
 namespace MiddleLayerAPI.Controllers
@@ -11,6 +12,11 @@ namespace MiddleLayerAPI.Controllers
     [Route("Detector")]
     public class DetectorController : ControllerBase
     {
+        private readonly AppSettings _appSettings;
+        public DetectorController(IOptions<AppSettings> appSettings) 
+        {
+            _appSettings = appSettings.Value;
+        }
         /// <summary>
         /// Takes in the input from the front end
         /// Sends off to the python API and returns the response to the front end
@@ -34,7 +40,7 @@ namespace MiddleLayerAPI.Controllers
 
         private async Task<ModelResponse?> PostToModel(ModelInput input)
         {
-            ModelResponse? response = await Helpers.ApiRequestHelper.PostToModel(input, null);
+            ModelResponse? response = await Helpers.ApiRequestHelper.PostToModel(input, _appSettings);
 
             return response;
         }
