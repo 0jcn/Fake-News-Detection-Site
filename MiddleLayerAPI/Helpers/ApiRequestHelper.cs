@@ -20,7 +20,7 @@ namespace MiddleLayerAPI.Helpers
         {
             var client = appSettings.Client;   
             string apiUrl = appSettings.ApiUrl;
-            string endpoint = $"{apiUrl}/predict";
+            string endpoint = $"{apiUrl}predict";
             string jsonString = JsonSerializer.Serialize(input);
             HttpResponseMessage retval = await client.PostAsJsonAsync(endpoint,  input);
             var jsonResult = retval.Content.ReadAsStringAsync().Result;

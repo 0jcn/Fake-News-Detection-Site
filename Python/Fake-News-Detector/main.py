@@ -21,8 +21,6 @@ app.add_middleware(
 
 class NewsItem(BaseModel):
     statement: str
-    subject: str
-    context: str
 
 @app.get("/")
 def health_check():
