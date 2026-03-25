@@ -13,3 +13,4 @@ The main aim of this project is to a create a machine learning model to efficien
 - Act as a middle layer between the site and the db + machine learning model
 ## Machine Learning
 - Be able to classify/ score articles based on likeliness to be fake news
+- The model and vectorizer can be found at this link: https://drive.proton.me/urls/KDF9W6BMD8#BzWJN0sPJLF2
