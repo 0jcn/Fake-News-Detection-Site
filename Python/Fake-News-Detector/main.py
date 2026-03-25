@@ -5,7 +5,6 @@ from joblib import load
 from pydantic import BaseModel
 import uvicorn
 import pandas as pd
-import numpy as np
 
 model = load("best_rfc.pkl")
 vectorizer = load("tfidf_vectorizer.joblib")

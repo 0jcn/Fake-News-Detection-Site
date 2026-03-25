@@ -1,8 +1,5 @@
 ﻿using MiddleLayerAPI.Models;
-using System.Net.Http.Headers;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Net.Http.Formatting;
 
 namespace MiddleLayerAPI.Helpers
 {

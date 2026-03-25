@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MiddleLayerAPI.Models;
-using Newtonsoft.Json;
 
 namespace MiddleLayerAPI.Controllers
 {
