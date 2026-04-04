@@ -73,5 +73,4 @@ namespace MiddleLayerAPI.Helpers
             return await _context.Users.FindAsync(updatedUser.Id);
         }
     }
-    }
 }
