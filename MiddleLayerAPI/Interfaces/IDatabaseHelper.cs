@@ -2,7 +2,7 @@
 
 namespace MiddleLayerAPI.Interfaces
 {
-    public interface DatabaseOperations
+    public interface IDatabaseHelper
     {
         public Users CreateUser(Users newUser);
 
