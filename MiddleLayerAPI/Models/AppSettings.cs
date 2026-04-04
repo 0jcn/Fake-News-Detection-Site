@@ -1,10 +1,21 @@
-﻿namespace MiddleLayerAPI.Models
+﻿using MiddleLayerAPI.Interfaces;
+using MiddleLayerAPI.Helpers;
+
+namespace MiddleLayerAPI.Models
 {
     /// <summary>
     /// Model for storing the appsettings needed across the API
     /// </summary>
     public class AppSettings
     {
+        private HttpClient _httpClient;
+        private IDatabaseHelper _databaseHelper;
+        public AppSettings(AppDbContext context)
+        {
+            _httpClient = GetClient();
+            _databaseHelper = new DatabaseHelper(context);
+
+        }
         /// <summary>
         /// URL to the machine learning API for predictions
         /// </summary>
@@ -12,7 +23,8 @@
         /// <summary>
         /// Http Client to use for requests to the machine learning API for predictions
         /// </summary>
-        public HttpClient Client => GetClient();
+        public HttpClient Client => _httpClient;
+        public IDatabaseHelper DbHelper => _databaseHelper;
         /// <summary>
         /// Returns a new HttpClient with the appropriate headers for requests to the machine learning API for predictions
         /// </summary>

@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using MiddleLayerAPI.Models;
 
 namespace MiddleLayerAPI.Controllers
 {
     public class UserController : Controller
     {
-        private AppDbContext _context;
+        private readonly AppSettings _appSettings;
 
-        public UserController(AppDbContext context)
+        public UserController(IOptions<AppSettings> appSettings)
         {
-            _context = context; 
+            _appSettings = appSettings.Value;
         }
 
 
-   
+
     }
 }

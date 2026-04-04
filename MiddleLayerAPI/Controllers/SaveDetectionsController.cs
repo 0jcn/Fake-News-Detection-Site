@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using MiddleLayerAPI.Models;
 
 namespace MiddleLayerAPI.Controllers
 {
     public class SaveDetectionsController : Controller
     {
-        private AppDbContext _context;
-        public SaveDetectionsController(AppDbContext context)
+        private readonly AppSettings _appSettings;
+        public SaveDetectionsController(IOptions<AppSettings> appSettings)
         {
-            _context = context;
+            _appSettings = appSettings.Value;
         }
     }
 }

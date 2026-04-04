@@ -4,16 +4,16 @@ namespace MiddleLayerAPI.Interfaces
 {
     public interface IDatabaseHelper
     {
-        public Users CreateUser(Users newUser, AppDbContext context);
+        public Users CreateUser(Users newUser);
 
-        public Users UpdateUser(Users updatedUser, AppDbContext context);
+        public Users UpdateUser(Users updatedUser);
 
-        public bool DeleteUser(Users userToDelete, AppDbContext context);
+        public bool DeleteUser(Users userToDelete);
 
-        public Users GetUser(int userId, AppDbContext context);
+        public Users GetUser(int userId);
 
-        public bool SaveDetection(SavedDetections newDetection, AppDbContext context);
+        public bool SaveDetection(SavedDetections newDetection);
 
-        public bool RemoveSavedDetection(int detectionid, AppDbContext context);
+        public bool RemoveSavedDetection(int detectionid);
     }
 }

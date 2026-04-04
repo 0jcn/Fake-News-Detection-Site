@@ -5,7 +5,11 @@ namespace MiddleLayerAPI.Helpers
 {
     public class DatabaseHelper : IDatabaseHelper
     {
-
+        private AppDbContext _context;
+        public DatabaseHelper(AppDbContext context)
+        {
+            _context = context;
+        }
         public Users CreateUser(Users newUser, AppDbContext context)
         {
             throw new NotImplementedException();
