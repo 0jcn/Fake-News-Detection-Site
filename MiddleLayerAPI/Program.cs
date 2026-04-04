@@ -1,5 +1,7 @@
 
 
+using Microsoft.EntityFrameworkCore;
+using MiddleLayerAPI;
 using MiddleLayerAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("AppSettings:DbConnectionString")));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
