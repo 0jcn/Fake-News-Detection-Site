@@ -22,7 +22,7 @@ function Home() {
       });
       const data = await response.json();
       console.log(data);
-      const predictionResult = `${data.value.prediction}\n\n${data.value.probabilities}}`;
+      const predictionResult = `${data.value.prediction}\n\n${JSON.stringify(data.value.probabilities)}}`;
       setPrediction(predictionResult);
     } catch (error) {
       setPrediction('Error: Failed to get prediction');
