@@ -10,36 +10,68 @@ namespace MiddleLayerAPI.Helpers
         {
             _context = context;
         }
-        public Users CreateUser(Users newUser, AppDbContext context)
+        public async Task<Users> CreateUser(Users newUser)
         {
-            throw new NotImplementedException();
+
+            _context.Users.Add(newUser);
+            await _context.SaveChangesAsync();
+            return newUser;
         }
 
      
-        public bool DeleteUser(Users userToDelete, AppDbContext context)
+        public async Task<bool> DeleteUser(int userToDelete)
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.FindAsync(userToDelete);
+            if (user == null)
+                return false;
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
-        public Users GetUser(int userId, AppDbContext context)
+        public async Task<Users?> GetUser(int userId)
         {
-            throw new NotImplementedException();
+            Users? userToFind = await _context.Users.FindAsync(userId);
+            
+            return userToFind;
         }
 
-        public bool RemoveSavedDetection(int detectionid, AppDbContext context)
+        public async Task<bool> RemoveSavedDetection(int detectionid)
         {
-            throw new NotImplementedException();
+            var detection = await _context.SavedDetections.FindAsync(detectionid);
+            if (detection == null)
+                return false;
+
+            _context.SavedDetections.Remove(detection);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
 
 
-        public bool SaveDetection(SavedDetections newDetection, AppDbContext context)
+        public async Task<bool> SaveDetection(SavedDetections newDetection)
         {
-            throw new NotImplementedException();
+            _context.SavedDetections.Add(newDetection);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Users UpdateUser(Users updatedUser, AppDbContext context)
+        public async Task<Users?> UpdateUser(Users updatedUser)
         {
-            throw new NotImplementedException();
+            var existingUser = await _context.Users.FindAsync(updatedUser.Id);
+            if (existingUser == null)
+                return null;
+
+            existingUser.Username = updatedUser.Username;
+            existingUser.Email = updatedUser.Email;
+            existingUser.Password = updatedUser.Password;
+            existingUser.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return await _context.Users.FindAsync(updatedUser.Id);
         }
+    }
     }
 }

@@ -4,16 +4,16 @@ namespace MiddleLayerAPI.Interfaces
 {
     public interface IDatabaseHelper
     {
-        public Users CreateUser(Users newUser);
+        public Task<Users> CreateUser(Users newUser);
 
-        public Users UpdateUser(Users updatedUser);
+        public Task<Users?> UpdateUser(Users updatedUser);
 
-        public bool DeleteUser(Users userToDelete);
+        public Task<bool> DeleteUser(int userToDelete);
 
-        public Users GetUser(int userId);
+        public Task<Users?> GetUser(int userId);
 
-        public bool SaveDetection(SavedDetections newDetection);
+        public Task<bool> SaveDetection(SavedDetections newDetection);
 
-        public bool RemoveSavedDetection(int detectionid);
+        public Task<bool> RemoveSavedDetection(int detectionid);
     }
 }
