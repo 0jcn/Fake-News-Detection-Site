@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MiddleLayerAPI.Models;
@@ -23,19 +22,20 @@ namespace MiddleLayerAPI.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost(Name = "Predict")]
-        public ModelResponse GetPrediction([FromBody] ModelInput input)
+        public IActionResult GetPrediction([FromBody] ModelInput input)
         {
             
             ModelResponse? retval = PostToModel(input).Result;
 
             if(retval != null)
             {
-                return retval;
+                return new JsonResult(Ok(retval));
             }
-            return new ModelResponse
+            var errorResponse = new ModelResponse
             {
                 prediction = "Error: No response from model"
             };
+            return new JsonResult(NoContent());
         }
 
         private async Task<ModelResponse?> PostToModel(ModelInput input)

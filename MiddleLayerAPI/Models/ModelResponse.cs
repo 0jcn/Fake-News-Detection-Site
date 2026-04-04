@@ -7,6 +7,6 @@ namespace MiddleLayerAPI.Models
         /// </summary>
         public string? prediction { get; set; }  
 
-        public List<double>? probabilities { get; set; }
+        public Dictionary<string, double>? probabilities { get; set; }
     }
 }

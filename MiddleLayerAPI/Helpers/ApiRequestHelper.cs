@@ -1,8 +1,5 @@
 ﻿using MiddleLayerAPI.Models;
-using System.Net.Http.Headers;
 using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Net.Http.Formatting;
 
 namespace MiddleLayerAPI.Helpers
 {
@@ -20,7 +17,7 @@ namespace MiddleLayerAPI.Helpers
         {
             var client = appSettings.Client;   
             string apiUrl = appSettings.ApiUrl;
-            string endpoint = $"{apiUrl}/predict";
+            string endpoint = $"{apiUrl}predict";
             string jsonString = JsonSerializer.Serialize(input);
             HttpResponseMessage retval = await client.PostAsJsonAsync(endpoint,  input);
             var jsonResult = retval.Content.ReadAsStringAsync().Result;

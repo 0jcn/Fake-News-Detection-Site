@@ -5,7 +5,6 @@ from joblib import load
 from pydantic import BaseModel
 import uvicorn
 import pandas as pd
-import numpy as np
 
 model = load("best_rfc.pkl")
 vectorizer = load("tfidf_vectorizer.joblib")
@@ -21,8 +20,6 @@ app.add_middleware(
 
 class NewsItem(BaseModel):
     statement: str
-    subject: str
-    context: str
 
 @app.get("/")
 def health_check():
@@ -41,10 +38,13 @@ def predict(news_item: NewsItem):
         ]
         prediction = model.predict(input_features)[0]
         prediction_proba = model.predict_proba(input_features)[0]
-        
+        class_labels = model.classes_
+
+# Create a mapping of labels to probabilities
+        probabilities_dict = dict(zip(class_labels, prediction_proba.tolist()))
         return {
             "prediction": prediction,
-            "probabilities": prediction_proba.tolist()
+            "probabilities": probabilities_dict
         }
         
     except Exception as e:
