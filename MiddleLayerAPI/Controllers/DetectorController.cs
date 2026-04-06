@@ -12,9 +12,10 @@ namespace MiddleLayerAPI.Controllers
     public class DetectorController : ControllerBase
     {
         private readonly AppSettings _appSettings;
-        public DetectorController(IOptions<AppSettings> appSettings) 
+        public DetectorController(IOptions<AppSettings> appSettings, AppDbContext context)
         {
             _appSettings = appSettings.Value;
+            _appSettings.SetDbContext(context);
         }
         /// <summary>
         /// Takes in the input from the front end
