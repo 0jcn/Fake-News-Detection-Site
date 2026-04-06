@@ -35,6 +35,7 @@ namespace MiddleLayerAPI.Controllers
 
         }
         [HttpGet("/{userId}")]
+        [System.Web.Http.Authorize]
         public IActionResult GetUser(int userId)
         {
             var response = _appSettings.DbHelper.GetUser(userId).Result;
@@ -47,17 +48,20 @@ namespace MiddleLayerAPI.Controllers
         }
 
         [HttpPost("/login")]
-        public IActionResult Login([FromBody] Login loginRequest)
+        public async Task<IActionResult> Login([FromBody] Login loginRequest)
         {
-            var user = _appSettings.DbHelper.GetUserByUsername(loginRequest.Username).Result;
+            var user = await _appSettings.DbHelper.GetUserByUsername(loginRequest.Username);
             if (user != null && PasswordHelper.VerifyPassword(loginRequest.Password, user.Password))
             {
-                return new JsonResult(Ok(user));
+                string token = JWTHelper.GenerateToken(user.Id, user.Username, user.Tier, _appSettings.JWTSecret);
+                return new JsonResult(Ok(new Dictionary<string, string>() { {"token", token }  }));
             }
             return new JsonResult(NoContent());
         }
 
+
         [HttpPut]
+        [System.Web.Http.Authorize]
         public IActionResult updateUser([FromBody] Users updatedUser)
         {
             var response = _appSettings.DbHelper.UpdateUser(updatedUser).Result;
@@ -68,6 +72,7 @@ namespace MiddleLayerAPI.Controllers
             return new JsonResult(NoContent());
         }
         [HttpDelete("/{userId}")]
+        [System.Web.Http.Authorize]
         public IActionResult deleteUser(int userId)
         {
             var response = _appSettings.DbHelper.DeleteUser(userId).Result;

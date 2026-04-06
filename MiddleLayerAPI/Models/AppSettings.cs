@@ -30,6 +30,8 @@ namespace MiddleLayerAPI.Models
         public IDatabaseHelper DbHelper => _databaseHelper;
 
         public string DbConnectionString { get; set; }
+
+        public string JWTSecret { get; set; }
         /// <summary>
         /// Returns a new HttpClient with the appropriate headers for requests to the machine learning API for predictions
         /// </summary>
