@@ -5,7 +5,9 @@ using MiddleLayerAPI;
 using MiddleLayerAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+var appSettings = builder.Configuration.GetSection("AppSettings").Get<AppSettings>();
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(appSettings?.DbConnectionString));
 // Add services to the container.
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddControllers();
@@ -13,9 +15,6 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("AppSettings:DbConnectionString")));
 
 builder.Services.AddCors(options =>
 {

@@ -9,9 +9,10 @@ namespace MiddleLayerAPI.Controllers
     public class SaveDetectionsController : Controller
     {
         private readonly AppSettings _appSettings;
-        public SaveDetectionsController(IOptions<AppSettings> appSettings)
+        public SaveDetectionsController(IOptions<AppSettings> appSettings, AppDbContext context)
         {
             _appSettings = appSettings.Value;
+            _appSettings.SetDbContext(context);
         }
         [HttpPost]
         public IActionResult SaveDetection([FromBody] SavedDetections detection)

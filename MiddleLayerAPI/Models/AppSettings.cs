@@ -10,11 +10,14 @@ namespace MiddleLayerAPI.Models
     {
         private HttpClient _httpClient;
         private IDatabaseHelper _databaseHelper;
-        public AppSettings(AppDbContext context)
+        public AppSettings()
         {
             _httpClient = GetClient();
-            _databaseHelper = new DatabaseHelper(context);
+        }
 
+        public void SetDbContext(AppDbContext context)
+        {
+            _databaseHelper = new DatabaseHelper(context);
         }
         /// <summary>
         /// URL to the machine learning API for predictions
@@ -25,6 +28,8 @@ namespace MiddleLayerAPI.Models
         /// </summary>
         public HttpClient Client => _httpClient;
         public IDatabaseHelper DbHelper => _databaseHelper;
+
+        public string DbConnectionString { get; set; }
         /// <summary>
         /// Returns a new HttpClient with the appropriate headers for requests to the machine learning API for predictions
         /// </summary>

@@ -38,6 +38,12 @@ namespace MiddleLayerAPI.Helpers
             return userToFind;
         }
 
+        public Task<Users?> GetUserByUsername(string username)
+        {
+            Users? userToFind = _context.Users.FirstOrDefault(u => u.Username == username);
+            return Task.FromResult(userToFind);
+        }
+
         public async Task<bool> RemoveSavedDetection(int detectionid)
         {
             var detection = await _context.SavedDetections.FindAsync(detectionid);

@@ -15,5 +15,7 @@ namespace MiddleLayerAPI.Interfaces
         public Task<bool> SaveDetection(SavedDetections newDetection);
 
         public Task<bool> RemoveSavedDetection(int detectionid);
+
+        public Task<Users?> GetUserByUsername(string username);
     }
 }
