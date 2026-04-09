@@ -1,0 +1,194 @@
+.profile-page {
+  min-height: calc(100vh - 72px);
+  padding: 28px 16px;
+  background-color: #f5f5f5;
+}
+
+.profile-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 28px;
+  text-align: left;
+}
+
+.profile-card h1 {
+  margin-top: 0;
+  color: #111827;
+}
+
+.profile-card p {
+  color: #4b5563;
+  margin-bottom: 0;
+}
+
+.saved-error {
+  color: #b91c1c;
+}
+
+.saved-detections-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.saved-detection-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 14px;
+  background: #f9fafb;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.saved-detection-card:hover,
+.saved-detection-card:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+  outline: none;
+}
+
+.saved-detection-card h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  color: #111827;
+}
+
+.saved-detection-card p {
+  margin: 7px 0;
+}
+
+.saved-delete-button {
+  margin-top: 10px;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #ffffff;
+  background: #dc2626;
+  cursor: pointer;
+}
+
+.saved-delete-button:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.saved-delete-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.saved-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.saved-modal {
+  width: min(680px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.saved-modal h2,
+.saved-modal h3 {
+  margin-top: 0;
+  color: #111827;
+}
+
+.saved-modal-input {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.saved-probabilities-list p {
+  margin: 6px 0;
+}
+
+.saved-modal-close {
+  margin-top: 14px;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  color: #ffffff;
+  background: #2563eb;
+  cursor: pointer;
+}
+
+.saved-modal-close:hover {
+  background: #1d4ed8;
+}
+
+.account-form {
+  margin-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.account-form label {
+  color: #374151;
+  font-weight: 600;
+}
+
+.account-form input {
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 15px;
+}
+
+.account-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.account-update-button,
+.account-delete-button {
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.account-update-button {
+  background: #2563eb;
+}
+
+.account-update-button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.account-delete-button {
+  background: #dc2626;
+}
+
+.account-delete-button:hover:not(:disabled) {
+  background: #b91c1c;
+}
+
+.account-update-button:disabled,
+.account-delete-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.account-success {
+  color: #047857;
+}

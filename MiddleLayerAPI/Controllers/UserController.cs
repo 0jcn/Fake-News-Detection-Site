@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MiddleLayerAPI.Helpers;
 using MiddleLayerAPI.Models;
@@ -27,33 +29,44 @@ namespace MiddleLayerAPI.Controllers
                     var response = _appSettings.DbHelper.CreateUser(newUser).Result;
                     if (response != null)
                     {
-                        return new JsonResult(Ok(response));
+                        string token = GetToken(response.Id, response.Username, response.Tier);
+                        return new JsonResult(Ok(new Dictionary<string, string>() { { "token", token } }));
                     }
                 }
                 }
-                return new JsonResult(NoContent());
+                return BadRequest();
 
         }
-        [HttpGet("/{userId}")]
-        [System.Web.Http.Authorize]
-        public IActionResult GetUser(int userId)
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetUser()
         {
-            var response = _appSettings.DbHelper.GetUser(userId).Result;
-            if (response != null)
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
+            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
+            if (decodedToken.ContainsKey("userId"))
             {
-                return new JsonResult(Ok(response));
+                int userId = Convert.ToInt32(decodedToken["userId"]);
+                var response = _appSettings.DbHelper.GetUser(userId).Result;
+                if (response != null)
+                {
+                    return new JsonResult(Ok(response));
+                }
             }
             return new JsonResult(NoContent());
 
         }
-
+        private string GetToken(int id, string username, string tier)
+        {
+            string token = JWTHelper.GenerateToken(id, username, tier, _appSettings.JWTSecret);
+            return token;
+        }
         [HttpPost("/login")]
         public async Task<IActionResult> Login([FromBody] Login loginRequest)
         {
             var user = await _appSettings.DbHelper.GetUserByUsername(loginRequest.Username);
             if (user != null && PasswordHelper.VerifyPassword(loginRequest.Password, user.Password))
             {
-                string token = JWTHelper.GenerateToken(user.Id, user.Username, user.Tier, _appSettings.JWTSecret);
+                string token = GetToken(user.Id, user.Username, user.Tier);
                 return new JsonResult(Ok(new Dictionary<string, string>() { {"token", token }  }));
             }
             return new JsonResult(NoContent());
@@ -61,24 +74,36 @@ namespace MiddleLayerAPI.Controllers
 
 
         [HttpPut]
-        [System.Web.Http.Authorize]
-        public IActionResult updateUser([FromBody] Users updatedUser)
+        [Authorize]
+        public IActionResult updateUser([FromBody] UpdateUser updatedUser)
         {
-            var response = _appSettings.DbHelper.UpdateUser(updatedUser).Result;
-            if (response != null)
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
+            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
+            if (decodedToken.ContainsKey("userId"))
             {
-                return new JsonResult(Ok(response));
+                int userId = Convert.ToInt32(decodedToken["userId"]);
+                var response = _appSettings.DbHelper.UpdateUser(updatedUser, userId).Result;
+                if (response != null)
+                {
+                    return new JsonResult(Ok(response));
+                }
             }
             return new JsonResult(NoContent());
         }
-        [HttpDelete("/{userId}")]
-        [System.Web.Http.Authorize]
-        public IActionResult deleteUser(int userId)
+        [HttpDelete]
+        [Authorize]
+        public IActionResult deleteUser()
         {
-            var response = _appSettings.DbHelper.DeleteUser(userId).Result;
-            if (response)
+            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
+            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
+            if (decodedToken.ContainsKey("userId"))
             {
-                return new JsonResult(Ok("User deleted successfully"));
+                int userId = Convert.ToInt32(decodedToken["userId"]);
+                var response = _appSettings.DbHelper.DeleteUser(userId).Result;
+                if (response)
+                {
+                    return new JsonResult(Ok("User deleted successfully"));
+                }
             }
             return new JsonResult(NoContent());
         }

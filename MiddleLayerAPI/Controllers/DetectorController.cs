@@ -22,7 +22,7 @@ namespace MiddleLayerAPI.Controllers
         /// Sends off to the python API and returns the response to the front end
         /// </summary>
         /// <returns></returns>
-        [HttpPost(Name = "Predict")]
+        [HttpPost]
         public IActionResult GetPrediction([FromBody] ModelInput input)
         {
             
@@ -46,7 +46,7 @@ namespace MiddleLayerAPI.Controllers
             return response;
         }
 
-        [HttpGet(Name = "HealthCheck")]
+        [HttpGet("HealthCheck")]
         public IActionResult HealthCheck()
         {
             return Ok("Middle Layer is running");
