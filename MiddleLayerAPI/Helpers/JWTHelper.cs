@@ -11,8 +11,8 @@ namespace MiddleLayerAPI.Helpers
         {
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, username),
+                new Claim("userId", userId.ToString()),
+                new Claim("username", username),
                 new Claim(ClaimTypes.Role, tier)
             };
 

@@ -12,10 +12,17 @@ namespace MiddleLayerAPI.Helpers
         }
         public async Task<Users> CreateUser(Users newUser)
         {
-
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-            return newUser;
+            try
+            {
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
+                return newUser;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("error creating account");
+                return null;
+            }
         }
 
      
@@ -64,19 +71,24 @@ namespace MiddleLayerAPI.Helpers
             return true;
         }
 
-        public async Task<Users?> UpdateUser(Users updatedUser)
+        public async Task<Users?> UpdateUser(UpdateUser updatedUser, int userId)
         {
-            var existingUser = await _context.Users.FindAsync(updatedUser.Id);
+            var existingUser = await _context.Users.FindAsync(userId);
             if (existingUser == null)
                 return null;
 
             existingUser.Username = updatedUser.Username;
             existingUser.Email = updatedUser.Email;
-            existingUser.Password = updatedUser.Password;
             existingUser.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
-            return await _context.Users.FindAsync(updatedUser.Id);
+            return await _context.Users.FindAsync(userId);
+        }
+
+        public async Task<List<SavedDetections>> GetSavedDetectionsByUserId(int userId)
+        {
+            var detections = _context.SavedDetections.Where(d => d.UserId == userId).ToList();
+            return await Task.FromResult(detections);
         }
     }
 }

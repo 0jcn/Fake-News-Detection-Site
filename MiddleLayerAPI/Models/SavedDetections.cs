@@ -16,7 +16,7 @@ namespace MiddleLayerAPI.Models
         public string Input { get; set; } = string.Empty;
         [Required]
         [Column("result")]
-        public float? Result { get; set; }
+        public string? Result { get; set; }
         [Required]
         [Column("true_prob")]
         public float? TrueProbability { get; set; }

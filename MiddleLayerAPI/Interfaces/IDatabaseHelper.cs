@@ -6,7 +6,7 @@ namespace MiddleLayerAPI.Interfaces
     {
         public Task<Users> CreateUser(Users newUser);
 
-        public Task<Users?> UpdateUser(Users updatedUser);
+        public Task<Users?> UpdateUser(UpdateUser updatedUser, int userId);
 
         public Task<bool> DeleteUser(int userToDelete);
 
@@ -17,5 +17,7 @@ namespace MiddleLayerAPI.Interfaces
         public Task<bool> RemoveSavedDetection(int detectionid);
 
         public Task<Users?> GetUserByUsername(string username);
+
+        public Task<List<SavedDetections>> GetSavedDetectionsByUserId(int userId);
     }
 }
