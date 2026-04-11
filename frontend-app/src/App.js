@@ -9,17 +9,17 @@ import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(() => localStorage.getItem('isLoggedIn') === 'true');
+  const [isLoggedIn, setIsLoggedIn] = useState(() => sessionStorage.getItem('isLoggedIn') === 'true');
 
   const authActions = useMemo(
     () => ({
       login: () => {
         setIsLoggedIn(true);
-        localStorage.setItem('isLoggedIn', 'true');
+        sessionStorage.setItem('isLoggedIn', 'true');
       },
       logout: () => {
         setIsLoggedIn(false);
-        localStorage.setItem('isLoggedIn', 'false');
+        sessionStorage.setItem('isLoggedIn', 'false');
       }
     }),
     []

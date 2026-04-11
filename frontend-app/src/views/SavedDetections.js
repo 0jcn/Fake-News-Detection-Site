@@ -37,7 +37,7 @@ function SavedDetections() {
         setErrorMessage('');
 
         const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-        const authToken = localStorage.getItem('authToken');
+        const authToken = sessionStorage.getItem('authToken');
         const response = await fetch(`${apiBaseUrl}/SaveDetections`, {
           method: 'GET',
           headers: {
@@ -92,7 +92,7 @@ function SavedDetections() {
       setDeletingIds((prev) => [...prev, detectionId]);
 
       const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-      const authToken = localStorage.getItem('authToken');
+      const authToken = sessionStorage.getItem('authToken');
       const response = await fetch(`${apiBaseUrl}/SaveDetections/${detectionId}`, {
         method: 'DELETE',
         headers: {

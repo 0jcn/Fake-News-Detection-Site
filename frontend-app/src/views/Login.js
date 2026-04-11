@@ -43,7 +43,7 @@ function Login({ onLogin }) {
       }
       console.log(data.value.token);
       if (data?.value) {
-        localStorage.setItem('authToken', data.value.token);
+        sessionStorage.setItem('authToken', data.value.token);
       }
       console.log(data);
       onLogin();

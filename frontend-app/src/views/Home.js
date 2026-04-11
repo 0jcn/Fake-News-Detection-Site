@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import '../styles/Home.css';
 
+const probabilityKeyMap = [
+  { label: 'True', key: 'true' },
+  { label: 'Barely True', key: 'barely-true' },
+  { label: 'Half True', key: 'half-true' },
+  { label: 'False', key: 'false' },
+  { label: 'Mostly True', key: 'mostly-true' },
+  { label: 'Pants Fire', key: 'pants-fire' }
+];
+
 
 const buildSavedDetectionPayload = (latestDetection) => {
   const probabilities = latestDetection?.probabilities || {};
@@ -37,19 +46,22 @@ function Home({ isLoggedIn }) {
     }
 
     setIsLoading(true);
+    setPrediction('');
     setSaveStatus('');
     
     try {
       let apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
       const response = await fetch(`${apiBaseUrl}/Detector/`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('authToken')}` },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${sessionStorage.getItem('authToken')}` },
         body: JSON.stringify({ statement: inputText })
       });
       const data = await response.json();
       console.log(data);
-      const predictionResult = `${data.value.prediction}\n\n${JSON.stringify(data.value.probabilities)}`;
-      setPrediction(predictionResult);
+      if (!response.ok) {
+        throw new Error(data?.message || 'Failed to get prediction');
+      }
+
       setLatestDetection({
         statement: inputText,
         prediction: data?.value?.prediction,
@@ -71,13 +83,13 @@ function Home({ isLoggedIn }) {
 
     try {
       setSaveStatus('Saving...');
-      localStorage.setItem('latestDetection', JSON.stringify(latestDetection));
+      sessionStorage.setItem('latestDetection', JSON.stringify(latestDetection));
 
       const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
       console.log('API Base URL:', apiBaseUrl);
-      console.log('Auth Token:', localStorage.getItem('authToken'));
+      console.log('Auth Token:', sessionStorage.getItem('authToken'));
       console.log('Payload:', buildSavedDetectionPayload(latestDetection));
-      const authToken = localStorage.getItem('authToken');
+      const authToken = sessionStorage.getItem('authToken');
       const payload = buildSavedDetectionPayload(latestDetection);
       const response = await fetch(`${apiBaseUrl}/SaveDetections`, {
         method: 'POST',
@@ -138,7 +150,21 @@ function Home({ isLoggedIn }) {
         <div className="results-section">
           <h2>Results:</h2>
           <div className="prediction-result">
-            {prediction || <span className="placeholder">Prediction will appear here...</span>}
+            {latestDetection ? (
+              <>
+                <p><strong>Result:</strong> {latestDetection.prediction}</p>
+                <h3>Probabilities</h3>
+                <div className="probabilities-list">
+                  {probabilityKeyMap.map((probability) => (
+                    <p key={probability.key}>
+                      <strong>{probability.label}:</strong> {latestDetection?.probabilities?.[probability.key]}
+                    </p>
+                  ))}
+                </div>
+              </>
+            ) : (
+              prediction || <span className="placeholder">Prediction will appear here...</span>
+            )}
           </div>
         </div>
       </div>

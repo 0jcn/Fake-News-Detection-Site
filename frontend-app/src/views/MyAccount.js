@@ -22,7 +22,7 @@ function MyAccount() {
         setStatusMessage('');
 
         const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-        const authToken = localStorage.getItem('authToken');
+        const authToken = sessionStorage.getItem('authToken');
         const response = await fetch(`${apiBaseUrl}/Users`, {
           method: 'GET',
           headers: {
@@ -73,7 +73,7 @@ function MyAccount() {
       setStatusMessage('');
 
       const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-      const authToken = localStorage.getItem('authToken');
+      const authToken = sessionStorage.getItem('authToken');
       const response = await fetch(`${apiBaseUrl}/Users`, {
         method: 'PUT',
         headers: {
@@ -112,7 +112,7 @@ function MyAccount() {
       setStatusMessage('');
 
       const apiBaseUrl = process.env.REACT_APP_API_BASE_URL;
-      const authToken = localStorage.getItem('authToken');
+      const authToken = sessionStorage.getItem('authToken');
       const response = await fetch(`${apiBaseUrl}/Users`, {
         method: 'DELETE',
         headers: {
@@ -126,9 +126,9 @@ function MyAccount() {
         throw new Error(data?.message || 'Unable to delete account.');
       }
 
-      localStorage.removeItem('authToken');
-      localStorage.setItem('isLoggedIn', 'false');
-      localStorage.removeItem('latestDetection');
+      sessionStorage.removeItem('authToken');
+      sessionStorage.setItem('isLoggedIn', 'false');
+      sessionStorage.removeItem('latestDetection');
       navigate('/login');
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : 'Unable to delete account.');

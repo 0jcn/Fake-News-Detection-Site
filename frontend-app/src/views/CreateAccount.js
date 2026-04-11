@@ -55,7 +55,7 @@ function CreateAccount({ onCreateAccount }) {
       
       if(response.status === 200){
         if (data?.value?.token) {
-          localStorage.setItem('authToken', data.value.token);
+          sessionStorage.setItem('authToken', data.value.token);
         }
 
         onCreateAccount();
