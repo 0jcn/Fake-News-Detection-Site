@@ -5,6 +5,7 @@ from joblib import load
 from pydantic import BaseModel
 import uvicorn
 import pandas as pd
+import sklearn
 
 model = load("best_rfc.pkl")
 vectorizer = load("tfidf_vectorizer.joblib")
@@ -63,5 +64,5 @@ def clean_text(text):
     
     return text
 
-if __name__ == "__main__":    
-    uvicorn.run(app, port=8080)
+# if __name__ == "__main__":    
+#     uvicorn.run(app, port=8080)
