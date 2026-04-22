@@ -34,6 +34,12 @@ function Navbar({ isLoggedIn, onLogout }) {
                 Login
               </NavLink>
               <NavLink
+                to="/disclaimers"
+                className={({ isActive }) => (isActive ? 'site-nav-link active-link' : 'site-nav-link')}
+              >
+                Disclaimers
+              </NavLink>
+              <NavLink
                 to="/create-account"
                 className={({ isActive }) =>
                   isActive ? 'site-nav-link site-nav-cta active-link' : 'site-nav-link site-nav-cta'
@@ -61,6 +67,12 @@ function Navbar({ isLoggedIn, onLogout }) {
                 className={({ isActive }) => (isActive ? 'site-nav-link active-link' : 'site-nav-link')}
               >
                 My Account
+              </NavLink>
+              <NavLink
+                to="/disclaimers"
+                className={({ isActive }) => (isActive ? 'site-nav-link active-link' : 'site-nav-link')}
+              >
+                Disclaimers
               </NavLink>
               <button type="button" className="site-nav-link logout-button" onClick={handleLogout}>
                 Logout

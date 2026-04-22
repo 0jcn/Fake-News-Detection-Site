@@ -5,6 +5,7 @@ import Login from './views/Login';
 import CreateAccount from './views/CreateAccount';
 import SavedDetections from './views/SavedDetections';
 import MyAccount from './views/MyAccount';
+import Disclaimers from './views/Disclaimers';
 import Navbar from './components/Navbar';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
@@ -48,6 +49,7 @@ function App() {
               path="/my-account"
               element={isLoggedIn ? <MyAccount /> : <Navigate to="/login" replace />}
             />
+            <Route path="/disclaimers" element={<Disclaimers />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
