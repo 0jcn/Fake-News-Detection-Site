@@ -1,0 +1,62 @@
+services:
+  db:
+    image: fakenews-db:latest
+    build:
+      context: ./Docker/Database
+      dockerfile: Dockerfile
+    container_name: fakenews-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U comp3000 -d fakenewsdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ml-api:
+    image: fakenews-ml-api:latest
+    build:
+      context: ./Python/Fake-News-Detector
+      dockerfile: Dockerfile
+    container_name: fakenews-ml-api
+    ports:
+      - "8000:8000"
+
+  middle-layer-api:
+    image: fakenews-middle-layer-api:latest
+    build:
+      context: ./MiddleLayerAPI
+      dockerfile: Dockerfile
+    container_name: fakenews-middle-layer-api
+    depends_on:
+      db:
+        condition: service_healthy
+      ml-api:
+        condition: service_started
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      ASPNETCORE_ENVIRONMENT: Development
+      AppSettings__ApiUrl: http://ml-api:8000/
+      AppSettings__DbConnectionString: Host=db;Port=5432;Database=fakenewsdb;Username=comp3000;Password=comp3000;
+      AppSettings__JWTSecret: edefca6f5a19e2844124d29354888a052d8074a761038ba5f0e4fee4fd4c50bc
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: fakenews-frontend:latest
+    build:
+      context: ./frontend-app
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_BASE_URL: http://localhost:8080
+    container_name: fakenews-frontend
+    depends_on:
+      middle-layer-api:
+        condition: service_started
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:

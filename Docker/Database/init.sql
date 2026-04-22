@@ -1,4 +1,6 @@
-CREATE TABLE fake_news_site.users (
+CREATE SCHEMA IF NOT EXISTS fake_news_site;
+
+CREATE TABLE IF NOT EXISTS fake_news_site.users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) UNIQUE NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -8,9 +10,9 @@ CREATE TABLE fake_news_site.users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE fake_news_site.saved_detections (
+CREATE TABLE IF NOT EXISTS fake_news_site.saved_detections (
     detection_id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES fake_news_site.users(id) ON DELETE CASCADE,
     input TEXT NOT NULL,
     result TEXT NOT NULL,
     true_prob NUMERIC,
