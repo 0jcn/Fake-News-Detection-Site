@@ -3,6 +3,9 @@ using MiddleLayerAPI.Models;
 
 namespace MiddleLayerAPI
 {
+    /// <summary>
+    /// Db Context for the application, used to interact with the database.
+    /// </summary>
     public class AppDbContext : DbContext
     {
         public DbSet<Users> Users { get; set; }

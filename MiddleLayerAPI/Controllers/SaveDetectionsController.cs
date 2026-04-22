@@ -6,6 +6,10 @@ using MiddleLayerAPI.Models;
 
 namespace MiddleLayerAPI.Controllers
 {
+    /// <summary>
+    /// Controller for saving detections
+    /// Only accessible when the user has loggged in
+    /// </summary>
     [ApiController]
     [Authorize]
     [Route("SaveDetections")]
@@ -17,16 +21,18 @@ namespace MiddleLayerAPI.Controllers
             _appSettings = appSettings.Value;
             _appSettings.SetDbContext(context);
         }
+        /// <summary>
+        /// Saves a detection for the logged in user
+        /// </summary>
+        /// <param name="detection">Detection to save</param>
+        /// <returns>Ok if the detection is saved successfully, BadRequest otherwise</returns>
         [HttpPost]
         public IActionResult SaveDetection([FromBody] SavedDetections detection)
         {
-            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
-            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
-            if (decodedToken.ContainsKey("userId"))
+            var userId = JWTHelper.GetUserIdFromToken(Request, _appSettings.JWTSecret);
+            if (userId != -1)
             {
-                var userId = decodedToken["userId"];
-                detection.UserId = Convert.ToInt32(userId);
-
+                detection.UserId = userId;
                 var response = _appSettings.DbHelper.SaveDetection(detection).Result;
                 if (response)
                 {
@@ -35,6 +41,11 @@ namespace MiddleLayerAPI.Controllers
             }
             return new JsonResult(BadRequest());
         }
+        /// <summary>
+        /// Deletes a saved detection for the user
+        /// </summary>
+        /// <param name="detectionId">Detection ID</param>
+        /// <returns>Ok or NoContent</returns>
         [HttpDelete("{detectionId}")]
         public IActionResult RemoveSavedDetection(int detectionId)
         {
@@ -45,16 +56,17 @@ namespace MiddleLayerAPI.Controllers
             }
             return new JsonResult(NoContent());
         }
-
+        /// <summary>
+        /// Retrieves all of a users saved detections
+        /// </summary>
+        /// <returns>List of saved detections if successful, NoContent otherwise</returns>
         [HttpGet]
         public IActionResult GetSavedDetections()
         {
-            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
-            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
-            if (decodedToken.ContainsKey("userId"))
+            var userId = JWTHelper.GetUserIdFromToken(Request, _appSettings.JWTSecret);
+            if (userId != -1)
             {
-                var userId = decodedToken["userId"];
-                var response = _appSettings.DbHelper.GetSavedDetectionsByUserId(Convert.ToInt32(userId)).Result;
+                var response = _appSettings.DbHelper.GetSavedDetectionsByUserId(userId).Result;
                 if (response != null)
                 {
                     return new JsonResult(Ok(response));

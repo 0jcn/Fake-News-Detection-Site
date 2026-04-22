@@ -38,14 +38,21 @@ namespace MiddleLayerAPI.Controllers
             };
             return new JsonResult(NoContent());
         }
-
+        /// <summary>
+        /// Async function to post the input to the python API and get the response back, using the ApiRequestHelper class
+        /// </summary>
+        /// <param name="input">Statement from the front end</param>
+        /// <returns>Response from the model</returns>
         private async Task<ModelResponse?> PostToModel(ModelInput input)
         {
             ModelResponse? response = await Helpers.ApiRequestHelper.PostToModel(input, _appSettings);
 
             return response;
         }
-
+        /// <summary>
+        /// Simple health check to make sure that the middle layer is running
+        /// </summary>
+        /// <returns>Ok result to show that the middle layer is running</returns>
         [HttpGet("HealthCheck")]
         public IActionResult HealthCheck()
         {

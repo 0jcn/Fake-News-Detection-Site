@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MiddleLayerAPI.Models
 {
+    /// <summary>
+    /// Model for interacting with the SavedDetections table in the database
+    /// </summary>
     public class SavedDetections
     {
         [Key]

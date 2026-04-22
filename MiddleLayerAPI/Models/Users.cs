@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MiddleLayerAPI.Models
 {
+    /// <summary>
+    /// Model for interacting with the Users table in the database
+    /// </summary>
     public class Users
     {
         [Key]

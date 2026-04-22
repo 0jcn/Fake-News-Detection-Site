@@ -3,6 +3,9 @@ using MiddleLayerAPI.Models;
 
 namespace MiddleLayerAPI.Helpers
 {
+    /// <summary>
+    /// Implementation of IDatabaseHelper, contains all LINQ queries to the database and is used by the controllers to interact with the database
+    /// </summary>
     public class DatabaseHelper : IDatabaseHelper
     {
         private AppDbContext _context;

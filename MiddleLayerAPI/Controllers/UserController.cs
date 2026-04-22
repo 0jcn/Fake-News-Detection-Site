@@ -7,6 +7,9 @@ using MiddleLayerAPI.Models;
 
 namespace MiddleLayerAPI.Controllers
 {
+    /// <summary>
+    /// Controller for handling user operations
+    /// </summary>
     [ApiController]
     [Route("Users")]
     public class UserController : Controller
@@ -18,6 +21,11 @@ namespace MiddleLayerAPI.Controllers
             _appSettings = appSettings.Value;
             _appSettings.SetDbContext(context);
         }
+        /// <summary>
+        /// Creates a new user account
+        /// </summary>
+        /// <param name="newUser">New user details</param>
+        /// <returns>JWT token if the user is created successfully, BadRequest otherwise</returns>
         [HttpPost]
         public IActionResult CreateUser([FromBody] Users newUser)
         {
@@ -37,15 +45,17 @@ namespace MiddleLayerAPI.Controllers
                 return BadRequest();
 
         }
+        /// <summary>
+        /// Retrieves the details of the currently authenticated user
+        /// </summary>
+        /// <returns>User details if the token is valid, NoContent otherwise</returns>
         [HttpGet]
         [Authorize]
         public IActionResult GetUser()
         {
-            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
-            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
-            if (decodedToken.ContainsKey("userId"))
+            int userId = JWTHelper.GetUserIdFromToken(Request, _appSettings.JWTSecret);
+            if (userId != -1)
             {
-                int userId = Convert.ToInt32(decodedToken["userId"]);
                 var response = _appSettings.DbHelper.GetUser(userId).Result;
                 if (response != null)
                 {
@@ -55,11 +65,24 @@ namespace MiddleLayerAPI.Controllers
             return new JsonResult(NoContent());
 
         }
+        /// <summary>
+        /// Generates a JWT for the specified user and access tier.
+        /// </summary>
+        /// <param name="id">User ID</param>
+        /// <param name="username">Users username</param>
+        /// <param name="tier">Users tier</param>
+        /// <returns>A string containing the generated JWT for the specified user and tier.</returns>
         private string GetToken(int id, string username, string tier)
         {
             string token = JWTHelper.GenerateToken(id, username, tier, _appSettings.JWTSecret);
             return token;
         }
+        /// <summary>
+        /// Finds user by their username and verifies password
+        /// If details are correct, generates and returns a JWT for the user
+        /// </summary>
+        /// <param name="loginRequest">Username and entered password</param>
+        /// <returns>JWT token if successful, nothing otherwise</returns>
         [HttpPost("/login")]
         public async Task<IActionResult> Login([FromBody] Login loginRequest)
         {
@@ -72,16 +95,18 @@ namespace MiddleLayerAPI.Controllers
             return new JsonResult(NoContent());
         }
 
-
+        /// <summary>
+        /// Updates user details
+        /// </summary>
+        /// <param name="updatedUser">Updated details</param>
+        /// <returns>Updated user details if successful, NoContent otherwise</returns>
         [HttpPut]
         [Authorize]
         public IActionResult updateUser([FromBody] UpdateUser updatedUser)
         {
-            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
-            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
-            if (decodedToken.ContainsKey("userId"))
+            int userId = JWTHelper.GetUserIdFromToken(Request, _appSettings.JWTSecret);
+            if (userId != -1)
             {
-                int userId = Convert.ToInt32(decodedToken["userId"]);
                 var response = _appSettings.DbHelper.UpdateUser(updatedUser, userId).Result;
                 if (response != null)
                 {
@@ -90,15 +115,17 @@ namespace MiddleLayerAPI.Controllers
             }
             return new JsonResult(NoContent());
         }
+        /// <summary>
+        /// Deletes users account
+        /// </summary>
+        /// <returns>Ok, or no content</returns>
         [HttpDelete]
         [Authorize]
         public IActionResult deleteUser()
         {
-            var token = Request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer ", "");
-            Dictionary<string, object> decodedToken = JWTHelper.GetClaimsFromToken(token, _appSettings.JWTSecret);
-            if (decodedToken.ContainsKey("userId"))
+            int userId = JWTHelper.GetUserIdFromToken(Request, _appSettings.JWTSecret);
+            if (userId != -1)
             {
-                int userId = Convert.ToInt32(decodedToken["userId"]);
                 var response = _appSettings.DbHelper.DeleteUser(userId).Result;
                 if (response)
                 {
